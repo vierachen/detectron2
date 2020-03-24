@@ -7,8 +7,12 @@ from fvcore.common.timer import Timer
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from detectron2.structures import BoxMode
 
+<<<<<<< HEAD
 from .builtin_meta import _get_coco_instances_meta
 from .lvis_v0_5_categories import LVIS_CATEGORIES
+=======
+from detectron2.data.datasets.lvis_v0_5_categories import LVIS_CATEGORIES
+>>>>>>> no message
 
 """
 This file contains functions to parse LVIS-format annotations into dicts in the
@@ -56,6 +60,7 @@ def load_lvis_json(json_file, image_root, dataset_name=None):
            The results do not have the "image" field.
     """
     from lvis import LVIS
+
 
     json_file = PathManager.get_local_path(json_file)
 

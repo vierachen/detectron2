@@ -50,7 +50,9 @@ def get_extensions():
     sources = [main_source] + sources
     extension = CppExtension
 
-    extra_compile_args = {"cxx": []}
+    # extra_compile_args = {"cxx": []}
+    extra_compile_args  = {"cxx": ['/MD']}
+    extra_link_args  = ['/NODEFAULTLIB:LIBCMT.LIB']
     define_macros = []
 
     if (
@@ -80,6 +82,7 @@ def get_extensions():
             include_dirs=include_dirs,
             define_macros=define_macros,
             extra_compile_args=extra_compile_args,
+            extra_link_args = extra_link_args,
         )
     ]
 

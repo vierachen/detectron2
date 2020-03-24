@@ -11,7 +11,7 @@ from detectron2.config import get_cfg
 from detectron2.data.detection_utils import read_image
 from detectron2.utils.logger import setup_logger
 
-from predictor import VisualizationDemo
+from  predictor import VisualizationDemo
 
 # constants
 WINDOW_NAME = "COCO detections"
@@ -32,12 +32,23 @@ def setup_cfg(args):
 
 def get_parser():
     parser = argparse.ArgumentParser(description="Detectron2 demo for builtin models")
+    # parser.add_argument(
+    #     "--config-file",
+    #     default="configs/quick_schedules/mask_rcnn_R_50_FPN_inference_acc_test.yaml",
+    #     metavar="FILE",
+    #     help="path to config file",
+    # )
     parser.add_argument(
         "--config-file",
+<<<<<<< HEAD
         default="configs/quick_schedules/mask_rcnn_R_50_FPN_inference_acc_test.yaml",
+=======
+        default="output/config.yaml",
+>>>>>>> no message
         metavar="FILE",
         help="path to config file",
     )
+    
     parser.add_argument("--webcam", action="store_true", help="Take inputs from webcam.")
     parser.add_argument("--video-input", help="Path to video file.")
     parser.add_argument(
@@ -75,8 +86,18 @@ if __name__ == "__main__":
     logger.info("Arguments: " + str(args))
 
     cfg = setup_cfg(args)
-
+    
     demo = VisualizationDemo(cfg)
+
+    test_dir="datasets/ctf/char/val"
+    # test_dir="E:\\CTFWorkspace1129\\510141890900-187347-1F-191-1191-0"
+    args.input =  glob.glob(os.path.join(test_dir, "*.jpg"))
+
+
+    # args.input=["G:\\510075220500_214905_1F_191_1191_0_5_Ch4.jpg","G:\\510075220500_214905_1F_191_1191_0_2_Ch2.jpg",
+    #             "G:\\510075220500_214905_1F_191_1191_0_3_Ch4.jpg"]
+    args.output="output/inference/char/"
+    # args.video_input="G:\\Channel1.mp4"
 
     if args.input:
         if len(args.input) == 1:
@@ -97,14 +118,17 @@ if __name__ == "__main__":
                 )
             )
 
+
             if args.output:
-                if os.path.isdir(args.output):
-                    assert os.path.isdir(args.output), args.output
-                    out_filename = os.path.join(args.output, os.path.basename(path))
-                else:
-                    assert len(args.input) == 1, "Please specify a directory with args.output"
-                    out_filename = args.output
-                visualized_output.save(out_filename)
+                num = len(predictions["instances"])
+                if num == 3:
+                    if os.path.isdir(args.output):
+                        assert os.path.isdir(args.output), args.output
+                        out_filename = os.path.join(args.output, os.path.basename(path))
+                    else:
+                        assert len(args.input) == 1, "Please specify a directory with args.output"
+                        out_filename = args.output
+                    visualized_output.save(out_filename)
             else:
                 cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
                 cv2.imshow(WINDOW_NAME, visualized_output.get_image()[:, :, ::-1])

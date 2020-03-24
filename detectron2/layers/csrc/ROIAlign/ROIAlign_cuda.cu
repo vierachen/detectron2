@@ -4,6 +4,11 @@
 #include <c10/cuda/CUDAGuard.h>
 #include <ATen/cuda/CUDAApplyUtils.cuh>
 
+
+#include <THC/THC.h>
+#include <THC/THCAtomics.cuh>
+#include <THC/THCDeviceUtils.cuh>
+
 // TODO make it in a common file
 #define CUDA_1D_KERNEL_LOOP(i, n)                            \
   for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < n; \
@@ -305,6 +310,9 @@ __global__ void RoIAlignBackwardFeature(
   } // CUDA_1D_KERNEL_LOOP
 } // RoIAlignBackward
 
+ 
+
+
 namespace detectron2 {
 
 at::Tensor ROIAlign_forward_cuda(
@@ -334,10 +342,15 @@ at::Tensor ROIAlign_forward_cuda(
   auto output_size = num_rois * pooled_height * pooled_width * channels;
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
+<<<<<<< HEAD
   dim3 grid(std::min(
       at::cuda::ATenCeilDiv(
           static_cast<int64_t>(output_size), static_cast<int64_t>(512)),
       static_cast<int64_t>(4096)));
+=======
+  // dim3 grid(std::min(at::cuda::ATenCeilDiv(output_size, 512L), 4096L));
+  dim3 grid(std::min(THCCeilDiv((long)output_size, 512L), 4096L));  // cwr
+>>>>>>> no message
   dim3 block(512);
 
   if (output.numel() == 0) {
@@ -393,10 +406,15 @@ at::Tensor ROIAlign_backward_cuda(
 
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
+<<<<<<< HEAD
   dim3 grid(std::min(
       at::cuda::ATenCeilDiv(
           static_cast<int64_t>(grad.numel()), static_cast<int64_t>(512)),
       static_cast<int64_t>(4096)));
+=======
+  // dim3 grid(std::min(at::cuda::ATenCeilDiv(grad.numel(), 512L), 4096L));
+  dim3 grid(std::min(THCCeilDiv((long)grad.numel(), 512L), 4096L)); // cwr
+>>>>>>> no message
   dim3 block(512);
 
   // handle possibly empty gradients

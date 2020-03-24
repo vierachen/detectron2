@@ -35,7 +35,7 @@ class LVISEvaluator(DatasetEvaluator):
                 Otherwise, will evaluate the results in the current process.
             output_dir (str): optional, an output directory to dump results.
         """
-        from lvis import LVIS
+        from lvis import LVIS 
 
         self._tasks = self._tasks_from_config(cfg)
         self._distributed = distributed

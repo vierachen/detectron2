@@ -25,7 +25,13 @@ from .builtin_meta import _get_builtin_metadata
 from .cityscapes import load_cityscapes_instances, load_cityscapes_semantic
 from .lvis import get_lvis_instances_meta, register_lvis_instances
 from .pascal_voc import register_pascal_voc
+<<<<<<< HEAD
 from .register_coco import register_coco_instances, register_coco_panoptic_separated
+=======
+from .ctf import load_ctf_json
+from .builtin_meta import _get_builtin_metadata
+
+>>>>>>> no message
 
 # ==== Predefined datasets and splits for COCO ==========
 
@@ -212,9 +218,53 @@ def register_all_pascal_voc(root):
         MetadataCatalog.get(name).evaluator_type = "pascal_voc"
 
 
+
+
+# ==== Predefined dataset and splits for ctffield images ===========
+_PREDEFINED_SPLITS_CTF = {}
+_PREDEFINED_SPLITS_CTF["ctf_field"] = {
+    "ctf_field_train": ("ctf/field/train", "ctf/field/json"),
+    "ctf_field_val": ("ctf/field/val", "ctf/field/json"),
+    "ctf_field_test": ("ctf/field/test", "ctf/field/json"),
+    }
+
+_PREDEFINED_SPLITS_CTF["ctf_char"] = {
+    "ctf_char_train": ("ctf/char/train", "ctf/char/json"),
+    "ctf_char_val": ("ctf/char/val", "ctf/char/json"),
+    "ctf_char_test": ("ctf/char/test", "ctf/char/json"),
+    }
+
+def register_all_ctf(root="datasets"):
+    for dataset_name, splits_per_dataset in _PREDEFINED_SPLITS_CTF.items():
+        for key, (image_dir, gt_dir) in splits_per_dataset.items():
+            meta = _get_builtin_metadata(dataset_name)
+            image_dir = os.path.join(root, image_dir)
+            gt_dir = os.path.join(root, gt_dir)
+
+            
+            # 1. register a function which returns dicts
+            DatasetCatalog.register(
+                key, lambda x=image_dir, y=gt_dir , datatype = key: load_ctf_json(x, y,datatype)
+            )
+                # DatasetCatalog.register(key, lambda: load_ctf_json(image_dir, gt_dir, key))
+            # 2. Optionally, add metadata about this dataset,
+            # since they might be useful in evaluation, visualization or logging
+            MetadataCatalog.get(key).set(
+                image_root=image_dir, json_file=gt_dir, evaluator_type="ctf", **meta
+            )
+
+
 # Register them all under "./datasets"
+<<<<<<< HEAD
 _root = os.getenv("DETECTRON2_DATASETS", "datasets")
 register_all_coco(_root)
 register_all_lvis(_root)
 register_all_cityscapes(_root)
 register_all_pascal_voc(_root)
+=======
+register_all_coco()
+register_all_lvis()
+register_all_cityscapes()
+register_all_pascal_voc()
+register_all_ctf()
+>>>>>>> no message

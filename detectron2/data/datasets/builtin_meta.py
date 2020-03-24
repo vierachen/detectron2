@@ -264,4 +264,11 @@ def _get_builtin_metadata(dataset_name):
             "thing_classes": CITYSCAPES_THING_CLASSES,
             "stuff_classes": CITYSCAPES_STUFF_CLASSES,
         }
+    elif "ctf" in dataset_name:
+        if "field" in dataset_name:
+            CTF_FIELD_CLASSES = ["ctf", "gold", "999", "other",]
+            return {"thing_classes": CTF_FIELD_CLASSES}
+        elif "char" in dataset_name:
+            CTF_CHAR_CLASSES = ["c", "t", "f",]
+            return {"thing_classes": CTF_CHAR_CLASSES}
     raise KeyError("No built-in metadata for dataset {}".format(dataset_name))

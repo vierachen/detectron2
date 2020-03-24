@@ -5,8 +5,7 @@ This document provides a brief intro of the usage of builtin command-line tools 
 
 For a tutorial that involves actual coding with the API,
 see our [Colab Notebook](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5)
-which covers how to run inference with an
-existing model, and how to train a builtin model on a custom dataset.
+which covers how to run inference with an existing model, and how to train a builtin model on a custom dataset.
 
 For more advanced tutorials, refer to our [documentation](https://detectron2.readthedocs.io/tutorials/extend.html).
 

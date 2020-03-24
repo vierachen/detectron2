@@ -94,6 +94,38 @@ class ResizeTransform(Transform):
         return segmentation
 
 
+class Rotated180Transform(Transform):
+    """
+    Rotate the image 180 degree.
+
+    create by chenwr @2020/01/08
+    """
+
+    def __init__(self, h, w):
+        """
+        Args:
+            h, w (int): original image size
+            new_h, new_w (int): new image size
+            interp: PIL interpolation methods
+        """
+        # TODO decide on PIL vs opencv
+        super().__init__()
+        self._set_attributes(locals())
+
+    def apply_image(self, img, interp=None):
+        assert img.shape[:2] == (self.h, self.w)
+        pil_image = Image.fromarray(img)
+        pil_image = pil_image.rotate(180)
+        ret = np.asarray(pil_image)
+        return ret
+
+    def apply_coords(self, coords):
+        coords[:, 0] = self.w - coords[:, 0] 
+        coords[:, 1] = self.h - coords[:, 1] 
+        return coords
+
+
+
 def HFlip_rotated_box(transform, rotated_boxes):
     """
     Apply the horizontal flip transform on rotated boxes.

@@ -78,3 +78,7 @@ class TestTransforms(unittest.TestCase):
 
         t = T.RandomFlip()
         self.assertTrue(str(t) == "RandomFlip()")
+
+
+# test = TestTransforms()
+# test.test_apply_rotated_boxes()

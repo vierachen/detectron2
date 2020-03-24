@@ -75,7 +75,6 @@ def load_cityscapes_instances(image_dir, gt_dir, from_json=True, to_polygons=Tru
     # This is still not fast: all workers will execute duplicate works and will
     # take up to 10m on a 8GPU server.
     pool = mp.Pool(processes=max(mp.cpu_count() // get_world_size() // 2, 4))
-
     ret = pool.map(
         functools.partial(cityscapes_files_to_dict, from_json=from_json, to_polygons=to_polygons),
         files,
@@ -293,8 +292,11 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("image_dir")
-    parser.add_argument("gt_dir")
+    # parser.add_argument("image_dir")
+    # parser.add_argument("gt_dir")
+  
+    parser.add_argument("--image_dir",type=str, default="datasets/cityscapes/leftImg8bit/train")
+    parser.add_argument("--gt_dir",type=str, default="datasets/cityscapes/gtFine/train")
     parser.add_argument("--type", choices=["instance", "semantic"], default="instance")
     args = parser.parse_args()
     from detectron2.data.catalog import Metadata

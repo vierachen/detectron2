@@ -11,9 +11,14 @@ from fvcore.common.file_io import PathManager, file_lock
 from fvcore.common.timer import Timer
 from PIL import Image
 
+<<<<<<< HEAD
 from detectron2.structures import Boxes, BoxMode, PolygonMasks
 
 from .. import DatasetCatalog, MetadataCatalog
+=======
+# from .. import MetadataCatalog, DatasetCatalog  
+from detectron2.data import MetadataCatalog, DatasetCatalog  #cwr
+>>>>>>> no message
 
 """
 This file contains functions to parse COCO-format annotations into dicts in "Detectron2 format".
@@ -446,6 +451,11 @@ if __name__ == "__main__":
     import sys
 
     logger = setup_logger(name=__name__)
+
+    sys.argv.append(str("datasets\\coco\\annotations\\instances_val2014.json"))
+    sys.argv.append(str("datasets\\coco\\val2014"))
+    sys.argv.append("coco_2014_val")
+
     assert sys.argv[3] in DatasetCatalog.list()
     meta = MetadataCatalog.get(sys.argv[3])
 

@@ -11,6 +11,7 @@ from fvcore.transforms.transform import (
     BlendTransform,
     CropTransform,
     HFlipTransform,
+    VFlipTransform,
     NoOpTransform,
     Transform,
     TransformList,
@@ -18,7 +19,7 @@ from fvcore.transforms.transform import (
 )
 from PIL import Image
 
-from .transform import ExtentTransform, ResizeTransform
+from .transform import ExtentTransform, ResizeTransform, Rotated180Transform
 
 __all__ = [
     "RandomBrightness",
@@ -26,6 +27,7 @@ __all__ = [
     "RandomCrop",
     "RandomExtent",
     "RandomFlip",
+    "RandomRotate",
     "RandomSaturation",
     "RandomLighting",
     "Resize",
@@ -140,6 +142,29 @@ class RandomFlip(TransformGen):
                 return HFlipTransform(w)
             elif self.vertical:
                 return VFlipTransform(h)
+        else:
+            return NoOpTransform()
+
+
+class RandomRotate(TransformGen):
+    """
+    rotated the image 180 degree with the given probability.
+    create by chenwr @2020/01/08
+    """
+
+    def __init__(self, prob=0.5):
+        """
+        Args:
+            prob (float): probability of flip.
+        """
+        super().__init__()
+        self._init(locals())
+
+    def get_transform(self, img):
+        h, w = img.shape[:2]
+        do = self._rand_range() < self.prob
+        if do:
+            return Rotated180Transform(h,w)
         else:
             return NoOpTransform()
 

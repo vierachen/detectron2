@@ -32,6 +32,7 @@ from detectron2.evaluation import (
     COCOPanopticEvaluator,
     DatasetEvaluators,
     LVISEvaluator,
+    CTFEvaluator,
     PascalVOCDetectionEvaluator,
     SemSegEvaluator,
     verify_results,
@@ -83,6 +84,11 @@ class Trainer(DefaultTrainer):
             return PascalVOCDetectionEvaluator(dataset_name)
         elif evaluator_type == "lvis":
             return LVISEvaluator(dataset_name, cfg, True, output_folder)
+
+        if evaluator_type == "ctf":
+            return CTFEvaluator(dataset_name, cfg, True, output_folder)
+        
+
         if len(evaluator_list) == 0:
             raise NotImplementedError(
                 "no Evaluator for the dataset {} with the type {}".format(
@@ -153,6 +159,13 @@ def main(args):
 
 if __name__ == "__main__":
     args = default_argument_parser().parse_args()
+    # args.config_file="configs/COCO-Detection/faster_rcnn_R_50_C4_1x.yaml"
+    # args.config_file="configs/Cityscapes/mask_rcnn_R_50_FPN.yaml"
+    # args.config_file="configs/CTF/faster_rcnn_R_50_C4_1x.yaml"  #cwr
+    args.config_file="configs/CTF/faster_rcnn_R_101_FPN_3x.yaml"  #cwr
+
+    args.eval_only=True
+
     print("Command Line Args:", args)
     launch(
         main,
